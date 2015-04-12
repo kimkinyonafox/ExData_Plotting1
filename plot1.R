@@ -31,28 +31,23 @@
                               tz = "UTC")
 
         
-        #Change date column to day of the week
-        my_data$Date <- strftime(my_data$Time, "%A")
-        
-        #adjust column names to reflect day of week & dateTime change
+        #adjust column name to reflect dateTime change
         my_names <- names(my_data)
-        my_names[1] <- "Day"
         my_names[2] <- "DateTime"
         names(my_data) <- my_names
         
-
-
-        final_data <- my_data
         
-
+        final_data <- my_data
+        final_data$Global_active_power <- as.numeric (final_data$Global_active_power)
+        
         
 #Plot frequency of Global active power (in kilowatts)
 #Plot to PNG device
-        final_data$Global_active_power <- as.numeric (final_data$Global_active_power)
         
         png (file = "plot1.png")
         par (mar = c(5.1, 4.1, 4.1, 2.1),
-             oma = c(0, 0, 2, 0))
+             oma = c(0, 0, 2, 0),
+             mfcol = c(1,1))
  
         with (final_data, hist(Global_active_power,
                                main = "Global Active Power",

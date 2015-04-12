@@ -1,15 +1,20 @@
 #R Plotting Task for Exploratory Data Analysis, Course Project 1,
-#Plot #3
+#Plot #4
 #by Kimkinyona Fox
 
 
-## The purpose of this code is to plot Energy sub metering vs.
-## DateTime. 
-## Sub-metering 1 will be colored black.
-## Sub-metering 2 will be colored red.
-## Sub-metering 3 will be colored blue.
-## There will be a legend in the top right hand corner.
-## The plot is a vertical line plot, with no title and no xlab title. 
+## The purpose of this code is to plot for plots on one page. 
+## Plot 1:  DateTime vs. Global Active Power
+## Plot 2:  DateTime vs. Energy sub metering vs.
+## Plot 3:  DateTime vs. Voltage
+## Plot 4:  DateTime vs. Global reactive power
+## Plot 1 should be a line plot, all in black.  Plot 2 should
+## be a line plot with
+## Sub-metering 1 shown in black.
+## Sub-metering 2 shown in red.
+## Sub-metering 3 shown in blue.  There will be a legend in 
+## the top right hand corner.  Plots 3 & 4 should be line 
+## plots in black.
 ## This plot will be constructed with the base plotting system
 
 
@@ -40,22 +45,30 @@
         my_names[2] <- "DateTime"
         names(my_data) <- my_names
         
-        
+
         final_data <- my_data
         final_data$Global_active_power <- as.numeric (final_data$Global_active_power)
         
-        
-        
-#Plot DateTime vs. Global active power (in kilowatts)
-#To make this a line plot, type = "l"
+#Put 4 plots on one page.
 #Plot to PNG device
+            
+        png (file = "plot4.png")
         
-        
-        png (file = "plot3.png")
         par (mar = c(5.1, 4.1, 4.1, 2.1),
              oma = c(0, 0, 0, 0),
-             mfcol = c(1,1))
+             mfcol = c(2,2))
         
+        
+        #plot 1
+        with (final_data, plot(DateTime, Global_active_power,
+                               col = "black",
+                               xlab = "",
+                               ylab = "Global Active Power",
+                               type = "l",
+                                ))
+        
+        
+        #plot 2
         #Just draw the plot frame, not the data
         with (final_data, plot(DateTime, Sub_metering_1,
                                xlab = "",
@@ -81,12 +94,35 @@
                                   type = "l"
                                 ))
         
-        #add a legend in the top right hand corner
+        #add a legend in the top right hand corner,
+        #shrink the legend size with cex parameter
+        #turn off legend border with bty parameter
         legend ("topright", col = c("black", "blue", "red"),
                 lwd = 1,
+                cex = 0.9,
+                bty = "n",
                 legend = c("Sub_metering_1",
                            "Sub_metering_2", 
                            "Sub_metering_3"))
+        
+        
+        #plots 3 & 4
+        #set the range of the y axis with ylim parameter
+        #set the size of the axis text (thus numbers shown)
+        # with cex.axis parameter
+        #set the size of the axis labels with cex.lab parameter
+        with (final_data,{
+                plot (DateTime, Voltage, col = "black", type = "l",
+                      xlab = "datetime",
+                      ylim = c(234,246))
+                plot (DateTime, Global_reactive_power, col = "black", 
+                      type = "l",
+                      lwd = 0.1,
+                      yaxp = c(0.0, 0.5, 5),
+                      xlab = "datetime")
+        })
+
+        
         dev.off()
         
         
